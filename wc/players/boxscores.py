@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 from selenium import webdriver
@@ -166,9 +167,11 @@ def crawl(season, save_destination):
                 s3 = boto3.resource('s3')
                 s3.Object('nbapc', 'crawled_data/boxscores/' + 'boxscores_' + season + '.csv').put(Body=csv_buffer.getvalue())
         elif save_destination == "wasb":
+                wasbaccountname = os.environ['wasbaccountname']
+                wasbaccountkey = os.environ['wasbaccountkey']
                 csv_buffer = StringIO()
                 result.to_csv(csv_buffer)
                 block_blob_service = BlockBlobService(
-                        account_name='sanbapc',
-                        account_key='DaAaiJQ2Se21ittEIyXfAswgqIbhKekdroVSPKgi2ySVQfM941QHkv6I2v/HWn8GGZUsNJPMmvvb0GvejNLpWg==')
+                        account_name=wasbaccountname,
+                        account_key=wasbaccountkey)
                 block_blob_service.create_blob_from_text('crawleddata', 'boxscores/' + 'boxscores_' + season + '.csv', csv_buffer.getvalue())

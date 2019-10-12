@@ -9,4 +9,4 @@ ADD chromedriver chromedriver
 
 WORKDIR wc
 
-CMD ["python3", "__main__.py", "boxscores", "2018-19", "wasb"]
+CMD ["python3", "__main__.py"]
