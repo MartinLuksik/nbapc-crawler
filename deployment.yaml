@@ -20,12 +20,8 @@ spec:
         image: nbapc.azurecr.io/nbacrawler:latest
         env:
         - name: table
-          value: ##table##
+          value: boxscores
         - name: season
-          value: ##season##
+          value: 2018-19
         - name: filesystem
-          value: ##filesystem##
-        - name: wasbaccountname
-          value: ##wasbaccountname##
-        - name: wasbaccountkey
-          value: ##wasbaccountkey##
+          value: wasb
