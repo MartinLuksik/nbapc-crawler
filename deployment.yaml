@@ -18,3 +18,14 @@ spec:
       containers:
       - name: wc
         image: nbapc.azurecr.io/nbacrawler:latest
+        env:
+        - name: table
+          value: ##table##
+        - name: season
+          value: ##season##
+        - name: filesystem
+          value: ##filesystem##
+        - name: wasbaccountname
+          value: ##wasbaccountname##
+        - name: wasbaccountkey
+          value: ##wasbaccountkey##
