@@ -22,9 +22,11 @@ def crawl(season, save_destination):
         # pull page source and html via beautiful soup
         html = driver.page_source
         soup = BeautifulSoup(html, features="html.parser")
+        print(soup)
 
         # get number of pages
         num_of_pages = soup.find_all('div', attrs={'class': 'stats-table-pagination__info'})
+        print(num_of_pages)
         num_of_pages = str(num_of_pages[0]).split("of ")[1].split('     ')[0]
 
         # create empty arrays for each stat, where you'll add data from each page
