@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wc
+  name: wc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wc
+  template:
+    metadata:
+      labels:
+        app: wc
+      name: wc
+    spec:
+      containers:
+      - name: wc
+        image: nbapc.azurecr.io/nbacrawler:latest
