@@ -31,8 +31,8 @@ def crawl(season, save_destination):
         # after the crawl of the last page is done, create a df from these arrays
 
         # create range based on the number of pages in the database(how many times you have to click 'forward'
-        pages = np.arange(1, int(num_of_pages), 1)
-        #pages = np.arange(1, 5, 1)
+        #pages = np.arange(1, int(num_of_pages), 1)
+        pages = np.arange(1, 5, 1)
 
         # Get Player
         Player = []
