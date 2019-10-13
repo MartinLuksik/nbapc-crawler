@@ -14,7 +14,7 @@ filesystem = os.environ['filesystem']
 
 def start_crawler():
     if table == "boxscores":
-        print("Starting crawler program: " + table + ". Season: " + season + filesystem)
+        print("Starting crawler program: " + table + ". Season: " + season + ". Filesystem: " + filesystem)
         players.boxscores.crawl(season, filesystem)
 
 if __name__ == '__main__':
