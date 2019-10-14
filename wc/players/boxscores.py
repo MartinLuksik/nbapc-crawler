@@ -15,14 +15,14 @@ def crawl(season, save_destination):
         chromedriver = "/chromedriver"
         driver = webdriver.Chrome(executable_path=chromedriver)
         driver.get('https://stats.nba.com/players/boxscores/?Season=' + season + '&SeasonType=Regular%20Season')
-        time.sleep(30)
-        driver.implicitly_wait(30)
+        time.sleep(60)
+        driver.implicitly_wait(60)
         #driver.get_screenshot_as_file('/home/luksa24/Desktop/main-page.png')
 
         # pull page source and html via beautiful soup
         html = driver.page_source
         soup = BeautifulSoup(html, features="html.parser")
-        print(soup)
+        #print(soup)
 
         # get number of pages
         num_of_pages = soup.find_all('div', attrs={'class': 'stats-table-pagination__info'})

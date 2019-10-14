@@ -1,34 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  labels:
-    app: wc
   name: wc
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: wc
-  template:
-    metadata:
-      labels:
-        app: wc
-      name: wc
-    spec:
-      volumes:
-      - name: dshm
-        emptyDir:
-          medium: Memory
-      containers:
-      - name: wc
-        image: nbapc.azurecr.io/nbacrawler:latest
-        volumeMounts:
-          - mountPath: /dev/shm
-            name: dshm
-        env:
-        - name: table
-          value: boxscores
-        - name: season
-          value: 2018-19
-        - name: filesystem
-          value: wasb
+  volumes:
+  - name: dshm
+    emptyDir:
+      medium: Memory
+  containers:
+  - name: wc
+    image: martindocker22/nbapc:crawler
+    volumeMounts:
+            - mountPath: /dev/shm
+              name: dshm
+    env:
+    - name: table
+      value: boxscores
+    - name: season
+      value: 2018-19
+    - name: filesystem
+      value: wasb
