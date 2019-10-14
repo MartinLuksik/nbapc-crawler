@@ -10,6 +10,7 @@ spec:
   containers:
   - name: wc
     image: martindocker22/nbapc:crawler
+    imagePullPolicy: Always
     volumeMounts:
             - mountPath: /dev/shm
               name: dshm
