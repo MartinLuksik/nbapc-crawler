@@ -13,10 +13,10 @@ from selenium.webdriver.chrome.options import Options
 def crawl(season, save_destination):
         # load chromedriver and open desired webpages, wait for page to load completely including java script
         chrome_options = Options()
-        #chrome_options.add_argument('--no-sandbox')
-        #chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-gpu')
 
-        #chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-dev-shm-usage')
         #chromedriver = "/home/luksa24/git/nbapc/nba_crawler/chromedriver"
         chromedriver = "/chromedriver"
         driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=chrome_options)
@@ -33,7 +33,6 @@ def crawl(season, save_destination):
         # get number of pages
         num_of_pages = soup.find_all('div', attrs={'class': 'stats-table-pagination__info'})
         print(num_of_pages)
-        time.sleep(60)
         num_of_pages = str(num_of_pages[0]).split("of ")[1].split('     ')[0]
 
         # create empty arrays for each stat, where you'll add data from each page
