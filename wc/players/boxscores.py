@@ -23,7 +23,7 @@ def crawl(season, save_destination):
         driver.get('https://stats.nba.com/players/boxscores/?Season=' + season + '&SeasonType=Regular%20Season')
         time.sleep(60)
         driver.implicitly_wait(60)
-        driver.get_screenshot_as_file('/screenshots/1.png')
+        driver.get_screenshot_as_file('/screenshots/2.png')
 
         # pull page source and html via beautiful soup
         html = driver.page_source
