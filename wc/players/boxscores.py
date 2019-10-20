@@ -15,6 +15,8 @@ def crawl(season, save_destination):
         chrome_options = Options()
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-gpu')
+        user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
+        options.add_argument(f'user-agent={user_agent}')
 
         #chrome_options.add_argument('--disable-dev-shm-usage')
         #chromedriver = "/home/luksa24/git/nbapc/nba_crawler/chromedriver"
