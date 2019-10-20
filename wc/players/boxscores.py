@@ -16,14 +16,14 @@ def crawl(season, save_destination):
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-gpu')
 
-        chrome_options.add_argument('--disable-dev-shm-usage')
+        #chrome_options.add_argument('--disable-dev-shm-usage')
         #chromedriver = "/home/luksa24/git/nbapc/nba_crawler/chromedriver"
         chromedriver = "/chromedriver"
         driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=chrome_options)
         driver.get('https://stats.nba.com/players/boxscores/?Season=' + season + '&SeasonType=Regular%20Season')
         time.sleep(60)
         driver.implicitly_wait(60)
-        #driver.get_screenshot_as_file('/home/luksa24/Desktop/main-page.png')
+        driver.get_screenshot_as_file('/screenshots/1.png')
 
         # pull page source and html via beautiful soup
         html = driver.page_source
