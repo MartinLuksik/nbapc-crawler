@@ -1,0 +1,9 @@
+selenium
+pyvirtualdisplay
+xvfbwrapper
+bs4
+numpy
+pandas
+requests
+boto3
+azure-storage-blob
