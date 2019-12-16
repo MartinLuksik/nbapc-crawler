@@ -14,4 +14,4 @@ ADD chromedriver /chromedriver
 
 WORKDIR /wc
 
-CMD ["python3", "__main__.py"]
+CMD ["python3", "-u", "__main__.py"]
