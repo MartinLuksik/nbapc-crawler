@@ -1,20 +1,18 @@
 pool:
   name: Azure Pipelines
-  vmImage: 'Ubuntu-16.04'
-
 steps:
 - task: Docker@0
-  displayName: 'Build an image: nbacrawler'
+  displayName: 'Build an image: crawler'
   inputs:
-    azureSubscription: 'Pay-As-You-Go (62c50507-6943-4f7d-b1e5-fb6a90aceaa3)'
-    azureContainerRegistry: '{"loginServer":"nbapc.azurecr.io", "id" : "/subscriptions/62c50507-6943-4f7d-b1e5-fb6a90aceaa3/resourceGroups/nbapc/providers/Microsoft.ContainerRegistry/registries/nbapc"}'
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: martindocker22
     dockerFile: Dockerfile
-    imageName: 'nbacrawler:latest'
+    imageName: 'martindocker22/nbapc:crawler'
 
 - task: Docker@0
-  displayName: 'Push the image to ACR'
+  displayName: 'Push the image to DockerHub'
   inputs:
-    azureSubscription: 'Pay-As-You-Go (62c50507-6943-4f7d-b1e5-fb6a90aceaa3)'
-    azureContainerRegistry: '{"loginServer":"nbapc.azurecr.io", "id" : "/subscriptions/62c50507-6943-4f7d-b1e5-fb6a90aceaa3/resourceGroups/nbapc/providers/Microsoft.ContainerRegistry/registries/nbapc"}'
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: martindocker22
     action: 'Push an image'
-    imageName: 'nbacrawler:latest'
+    imageName: 'martindocker22/nbapc:crawler'
