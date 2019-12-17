@@ -194,10 +194,11 @@ def crawl(season, save_destination):
                 s3.Object('nbapc', 'crawled_data/boxscores/' + 'boxscores_' + season + '.csv').put(Body=csv_buffer.getvalue())
         elif save_destination == "wasb":
                 wasbaccountname = os.environ['wasbaccountname']
+                containername = os.environ['containername']
                 wasbaccountkey = os.environ['wasbaccountkey']
                 csv_buffer = StringIO()
                 result.to_csv(csv_buffer)
                 block_blob_service = BlockBlobService(
                         account_name=wasbaccountname,
                         account_key=wasbaccountkey)
-                block_blob_service.create_blob_from_text('crawleddata', 'boxscores/' + 'boxscores_' + season + '.csv', csv_buffer.getvalue())
+                block_blob_service.create_blob_from_text(containername, 'boxscores/' + 'boxscores_' + season + '.csv', csv_buffer.getvalue())
