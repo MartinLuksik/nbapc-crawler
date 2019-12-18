@@ -184,20 +184,26 @@ def crawl(season, save_destination):
                                'FT_per': FT_PER, 'OREB': OREB, 'DREB': DREB, 'REB': REB, 'AST': AST,
                                'STL': STL, 'BLK': BLK, 'TOV': TOV, 'PF': PF, 'Plus_Minus': Plus_Minus})
 
+        result['Player'] = result['Player'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
+        result['Team'] = result['Team'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
+        result['MATCH_UP'] = result['MATCH_UP'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
+        result['GAME_DATE'] = result['GAME_DATE'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))    
+
         if save_destination == "local":
                 result.to_csv('/wc/data/boxscores_' + season + '.csv', index=False, sep=';')
                 print('CSV was successfully saved to /wc/data/boxscores_' + season + '.csv')
         elif save_destination == "s3":
+                s3bucket = os.environ['s3bucket']
                 csv_buffer = StringIO()
-                result.to_csv(csv_buffer)
+                result.to_csv(csv_buffer, index=False, sep=';')
                 s3 = boto3.resource('s3')
-                s3.Object('nbapc', 'crawled_data/boxscores/' + 'boxscores_' + season + '.csv').put(Body=csv_buffer.getvalue())
+                s3.Object(s3bucket, 'crawled_data/boxscores/' + 'boxscores_' + season + '.csv').put(Body=csv_buffer.getvalue())
         elif save_destination == "wasb":
                 wasbaccountname = os.environ['wasbaccountname']
                 containername = os.environ['containername']
                 wasbaccountkey = os.environ['wasbaccountkey']
                 csv_buffer = StringIO()
-                result.to_csv(csv_buffer)
+                result.to_csv(csv_buffer, index=False, sep=';')
                 block_blob_service = BlockBlobService(
                         account_name=wasbaccountname,
                         account_key=wasbaccountkey)

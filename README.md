@@ -8,7 +8,7 @@ This repository consists of a dockerized python program, which crawls data from 
 
 The microservice will serve the model passed during the build time.
 ```bash
-docker build -t <repo:tag> .
+docker build -t <repo:tag> --build-arg key=<aws-key> --build-arg secret=<aws-secret> --build-arg region=<aws-region> .
 ```
 
 # Run application
@@ -21,6 +21,5 @@ docker run -t -e table=boxscores -e season=2008-09 -e filesystem=local -v <path>
 docker run -t -e table=boxscores -e season=2008-09 -e filesystem=wasb -e wasbaccountname=<SAname> -e containername=<containername> -e wasbaccountkey=<SAkey> <repo:tag>
 
 # Save to S3
-TBD
-
+docker run -t -e table=boxscores -e season=2019-20 -e filesystem=s3 -e s3bucket=nbapc <repo:tag>
 ```
