@@ -1,13 +1,20 @@
 pool:
   name: Azure Pipelines
+#Your build pipeline references a secret variable named ‘jupyterhubUser’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references a secret variable named ‘jupyterhubPW’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘awskey’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘awssecret’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘awsregion’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
 steps:
-- task: Docker@0
-  displayName: 'Build an image: crawler'
+- task: Docker@1
+  displayName: 'Build an image: JupyterHubPAM'
   inputs:
     containerregistrytype: 'Container Registry'
-    dockerRegistryConnection: martindocker22
+    dockerRegistryEndpoint: martindocker22
     dockerFile: Dockerfile
-    imageName: 'martindocker22/nbapc:crawler'
+    arguments: '--build-arg user=$(jupyterhubUser) --build-arg pw=$(jupyterhubPW) --build-arg key=$(awskey) --build-arg secret=$(awssecret) --build-arg region=$(awsregion)'
+    imageName: 'martindocker22/nbapc:jupyterhubpam'
 
 - task: Docker@0
   displayName: 'Push the image to DockerHub'
@@ -15,4 +22,6 @@ steps:
     containerregistrytype: 'Container Registry'
     dockerRegistryConnection: martindocker22
     action: 'Push an image'
-    imageName: 'martindocker22/nbapc:crawler'
+    imageName: 'martindocker22/nbapc:jupyterhubpam'
+
+
