@@ -45,7 +45,7 @@ def crawl(season, save_destination):
         # get number of pages
         num_of_pages = soup.find_all('div', attrs={'class': 'stats-table-pagination__info'})
         num_of_pages = str(num_of_pages[0]).split("of ")[1].split('     ')[0]
-        print("The crawler has found " + num_of_pages + " in BoxScores table." )
+        print("The crawler has found " + num_of_pages + " pages in BoxScores table." )
 
         # create empty arrays for each stat, where you'll add data from each page
         # after the crawl of the last page is done, create a df from these arrays
