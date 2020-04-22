@@ -33,8 +33,9 @@ def crawl(season, save_destination):
         chromedriver = "/chromedriver"
         driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=chrome_options)
         driver.get('https://stats.nba.com/players/boxscores/?Season=' + season + '&SeasonType=Regular%20Season')
-        time.sleep(30)
-        driver.implicitly_wait(30)
+        sleep_t = random.randint(45,65)
+        time.sleep(sleep_t)
+        driver.implicitly_wait(sleep_t)
         #driver.get_screenshot_as_file('/screenshots/2.png')
 
         # pull page source and html via beautiful soup
@@ -86,7 +87,7 @@ def crawl(season, save_destination):
 
                 # Get stats from the table:
                 stats = soup.find_all('td')[:-50]
-
+                print(stats)
                 element = 0
                 for i in stats:
                         if element == 0:
@@ -183,28 +184,10 @@ def crawl(season, save_destination):
                                'PA_3': x3PA, 'FG3_per': x3P_PER, 'FTM': FTM, 'FTA': FTA,
                                'FT_per': FT_PER, 'OREB': OREB, 'DREB': DREB, 'REB': REB, 'AST': AST,
                                'STL': STL, 'BLK': BLK, 'TOV': TOV, 'PF': PF, 'Plus_Minus': Plus_Minus})
+        result = result.apply(lambda x: x.map(lambda y: str(y).lstrip('\n').rstrip('\n')))
+        #result['Player'] = result['Player'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
+        #result['Team'] = result['Team'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
+        #result['MATCH_UP'] = result['MATCH_UP'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
+        #result['GAME_DATE'] = result['GAME_DATE'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))    
 
-        result['Player'] = result['Player'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
-        result['Team'] = result['Team'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
-        result['MATCH_UP'] = result['MATCH_UP'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))
-        result['GAME_DATE'] = result['GAME_DATE'].map(lambda x: x.lstrip('\\n').rstrip('\\n'))    
-
-        if save_destination == "local":
-                result.to_csv('/wc/data/boxscores_' + season + '.csv', index=False, sep=';')
-                print('CSV was successfully saved to /wc/data/boxscores_' + season + '.csv')
-        elif save_destination == "s3":
-                s3bucket = os.environ['s3bucket']
-                csv_buffer = StringIO()
-                result.to_csv(csv_buffer, index=False, sep=';')
-                s3 = boto3.resource('s3')
-                s3.Object(s3bucket, 'crawled_data/boxscores/' + 'boxscores_' + season + '.csv').put(Body=csv_buffer.getvalue())
-        elif save_destination == "wasb":
-                wasbaccountname = os.environ['wasbaccountname']
-                containername = os.environ['containername']
-                wasbaccountkey = os.environ['wasbaccountkey']
-                csv_buffer = StringIO()
-                result.to_csv(csv_buffer, index=False, sep=';')
-                block_blob_service = BlockBlobService(
-                        account_name=wasbaccountname,
-                        account_key=wasbaccountkey)
-                block_blob_service.create_blob_from_text(containername, 'boxscores/' + 'boxscores_' + season + '.csv', csv_buffer.getvalue())
+        return result

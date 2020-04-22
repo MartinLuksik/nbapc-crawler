@@ -6,7 +6,7 @@ This repository consists of a dockerized python program, which crawls data from 
 
 # Docker build
 
-The microservice will serve the model passed during the build time.
+Provide s3 credentials to setup aws cli during the build time.
 ```bash
 docker build -t <repo:tag> --build-arg key=<aws-key> --build-arg secret=<aws-secret> --build-arg region=<aws-region> .
 ```
