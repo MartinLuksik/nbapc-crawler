@@ -1,29 +1,14 @@
 import pandas as pd
 import numpy as np
-from selenium import webdriver
 from bs4 import BeautifulSoup
 import time
-from selenium.webdriver.chrome.options import Options
 import random
-from xvfbwrapper import Xvfb
 
 
-def crawl(season, link):
-    vdisplay = Xvfb()
-    vdisplay.start()
-
-    # prepare Chrome driver
-    chrome_options = Options()
-    chrome_options.add_argument('--no-sandbox')
-    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
-    chrome_options.add_argument(f'user-agent={user_agent}')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chromedriver = "/chromedriver"
-    #chromedriver = "/home/martin/temp/chromedriver"
-    driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=chrome_options)
+def crawl(link, driver):
 
     # get page source
-    driver.get(link[0] + season + link[1])
+    driver.get(link)
     sleep_t = random.randint(45,65)
     time.sleep(sleep_t)
     driver.implicitly_wait(sleep_t)
@@ -35,7 +20,7 @@ def crawl(season, link):
     num_of_pages = soup.find_all('div', attrs={'class': 'stats-table-pagination__info'})
     num_of_pages = str(num_of_pages[0]).split("of ")[1].split('     ')[0]
     pages = np.arange(1, int(num_of_pages) + 1, 1)
-    print("The crawler has found " + num_of_pages + " pages in BoxScores table.")
+    print("The crawler has found " + num_of_pages)
 
     # get columns:
     c_names = soup.find('div', attrs={'class': 'nba-stat-table__overflow'}).find('thead').find_all('th')
@@ -44,7 +29,7 @@ def crawl(season, link):
         if "hidden" not in str(c):
             columns.append(c.get_text().strip().replace("%", "_PER").replace("+", "PLUS").replace("-", "MINUS").replace("/", "_"))
     n_col = len(columns)
-    print("The crawler has found the following columns in the table: \n" + str(columns))
+    print("The crawler has found the following columns: \n" + str(columns))
 
     # crawl data
     df_list_values = []
@@ -67,6 +52,24 @@ def crawl(season, link):
         time.sleep(random.randint(3, 6))
         html = driver.page_source
         soup = BeautifulSoup(html, features="html.parser")
-    vdisplay.stop()
 
     return pd.DataFrame(df_list_values, columns=columns)
+
+
+def get_all_seasons(link, driver):
+    driver.get(link[0] + "2019-20" + link[1])
+    sleep_t = random.randint(45, 65)
+    time.sleep(sleep_t)
+    driver.implicitly_wait(sleep_t)
+
+    html = driver.page_source
+    soup = BeautifulSoup(html, features="html.parser")
+
+    season_labels = soup.find('select', attrs={'class': 'ng-pristine ng-untouched ng-valid ng-not-empty'}).find_all(
+        "option")
+    seasons = []
+    for s in season_labels:
+        if s.get_text().strip() != "All Seasons":
+            seasons.append(s.get_text().strip())
+
+    return seasons
