@@ -43,7 +43,6 @@ def crawl(link, driver):
             if "hidden" not in str(i):
                 row_values.append(i.get_text().strip())
             if len(row_values) == n_col:
-                print(row_values)
                 df_list_values.append(row_values)
                 row_values = []
 
@@ -57,7 +56,7 @@ def crawl(link, driver):
 
 
 def get_all_seasons(link, driver):
-    driver.get(link[0] + "2019-20" + link[1])
+    driver.get(link)
     sleep_t = random.randint(45, 65)
     time.sleep(sleep_t)
     driver.implicitly_wait(sleep_t)

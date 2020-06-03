@@ -4,10 +4,11 @@ import os
 from azure.storage.blob import BlockBlobService
 
 
-def save_to(result, season, table, save_destination):
+def save_to(result, season, table, season_type, save_destination):
     if save_destination == "local":
             result.to_csv('/wc/data/' + season + '_' + table + '.csv', index=False, sep=';')
-            print('CSV was successfully saved to /wc/data/' + season + '_' + table + '.csv')
+            #result.to_csv('/home/martin/temp/nbapc_crawled_data/' + season + '_' + table + '_' + season_type + '.csv', index=False, sep=';')
+            print('CSV was successfully saved as:' + season + '_' + table + '_' + season_type + '.csv')
     elif save_destination == "s3":
             bucket = os.environ['s3bucket']
             csv_buffer = StringIO()
